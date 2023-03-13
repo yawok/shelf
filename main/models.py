@@ -10,3 +10,15 @@ class Product(models.Model):
     date_updated = models.DateTimeField(auto_now_add=True)
     
     
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product_image = models.ImageField(upload_to='product-images')
+    product_thumbnail = models.ImageField(upload_to='product-thumbnails', null=True)
+
+
+class ProductTag(models.Model):
+    products = models.ManyToManyField(Product, blank=True)
+    name = models.CharField(max_length=32)
+    slug = models.SlugField(max_length=48)
+    description = models.TextField(blank=True)
+    is_active = models.BooleanField(default=True)
