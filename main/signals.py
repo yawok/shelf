@@ -14,7 +14,7 @@ def generate_thumbnail(sender, instance, **kwargs):
     logger.info(f"Generating thumbnail for product {instance.product.id}")
     image = Image.open(instance.image)
     image = image.convert("RGB")
-    image.thumbnail(THUMBNAIL_SIZE, image.ANTIALIAS)
+    image.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
     
     temp_thumb = BytesIO()
     image.save(temp_thumb, "JPEG")
