@@ -16,6 +16,9 @@ class Product(models.Model):
     date_updated = models.DateTimeField(auto_now_add=True)
 
     objects = ActiveManager()
+    
+    def __str__(self):
+        return self.name
 
 
 class ProductImage(models.Model):
@@ -29,4 +32,8 @@ class ProductTag(models.Model):
     name = models.CharField(max_length=32)
     slug = models.SlugField(max_length=48)
     description = models.TextField(blank=True)
-    is_active = models.BooleanField(default=True)
+    active = models.BooleanField(default=True)
+
+     
+    def __str__(self):
+        return self.name
