@@ -1,0 +1,47 @@
+[
+{
+  "model": "main.producttag",
+  "fields": {
+    "name": "Python",
+    "slug": "python",
+    "description": "Python programming books",
+    "active": true
+  }
+},
+{
+  "model": "main.producttag",
+  "fields": {
+    "name": "Fiction",
+    "slug": "fiction",
+    "description": "Fictional books",
+    "active": true
+  }
+},
+{
+  "model": "main.producttag",
+  "fields": {
+    "name": "Non-fiction",
+    "slug": "non-fiction",
+    "description": "Non-fictional books",
+    "active": true
+  }
+},
+{
+  "model": "main.producttag",
+  "fields": {
+    "name": "Fashion",
+    "slug": "fashion",
+    "description": "Fashion",
+    "active": true
+  }
+},
+{
+  "model": "main.producttag",
+  "fields": {
+    "name": "Politics",
+    "slug": "politics",
+    "description": "",
+    "active": true
+  }
+}
+]
