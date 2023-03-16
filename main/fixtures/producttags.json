@@ -31,7 +31,7 @@
   "fields": {
     "name": "Fashion",
     "slug": "fashion",
-    "description": "Fashion",
+    "description": "Fashion books",
     "active": true
   }
 },
@@ -39,7 +39,7 @@
   "model": "main.producttag",
   "fields": {
     "name": "Politics",
-    "slug": "politics",
+    "slug": "politics books",
     "description": "",
     "active": true
   }
