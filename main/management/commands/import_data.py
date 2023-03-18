@@ -36,7 +36,7 @@ class Command(BaseCommand):
                     c['tags_created'] += 1
             with open(
                 os.path.join(
-                    options['image_basedire'],
+                    options['image_basedir'],
                     row['image_filename']
                 ), 'rb'
             ) as f:
@@ -51,11 +51,11 @@ class Command(BaseCommand):
             if created:
                 c['products_created'] += 1
         self.stdout.write(
-            f"Products prcessed={c['products']} (created{c['products_created']})"
+            f"Products processed={c['products']} (created={c['products_created']})"
         )
         self.stdout.write(
-            f"Tags processed={c['tags_created']} (created{c['tags_created']})"
+            f"Tags processed={c['tags_created']} (created={c['tags_created']})"
         )
         self.stdout.write(
-            f"Images processed {c['images']}"
+            f"Images processed={c['images']}"
         )   

@@ -1,15 +1,15 @@
 from django.test import TestCase, override_settings
 from io import StringIO
 import tempfile
-from django.conf import settingse
+from django.conf import settings
 from django.core.management import call_command
 from main import models
 
 class TestImport(TestCase):
     @override_settings(MEDIA_ROOT=tempfile.gettempdir())
-    def test_import_data(sefl):
+    def test_import_data(self):
         out = StringIO()
-        args = ['main/fixtures/product-sample.csv', 'main.fixtures/product-sample message']
+        args = ['main/fixtures/product-sample.csv', 'main/fixtures/product-sampleimages']
 
         call_command('import_data', *args, stdout=out)
         expected_out = ("Importing products\n"
