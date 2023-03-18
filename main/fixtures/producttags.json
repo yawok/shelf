@@ -2,44 +2,53 @@
 {
   "model": "main.producttag",
   "fields": {
-    "name": "Python",
-    "slug": "python",
-    "description": "Python programming books",
+    "name": "Finance",
+    "slug": "finance",
+    "description": "Finance related books",
     "active": true
   }
 },
 {
   "model": "main.producttag",
   "fields": {
-    "name": "Fiction",
-    "slug": "fiction",
-    "description": "Fictional books",
+    "name": "Teamwork",
+    "slug": "teamwork",
+    "description": "Advice about teamwork and team building",
     "active": true
   }
 },
 {
   "model": "main.producttag",
   "fields": {
-    "name": "Non-fiction",
-    "slug": "non-fiction",
-    "description": "Non-fictional books",
+    "name": "Opensource",
+    "slug": "opensource",
+    "description": "Collections of book dedicated to opensource",
     "active": true
   }
 },
 {
   "model": "main.producttag",
   "fields": {
-    "name": "Fashion",
-    "slug": "fashion",
-    "description": "Fashion books",
+    "name": "Science Fiction",
+    "slug": "science-fiction",
+    "description": "All the best science fiction books",
     "active": true
   }
 },
 {
   "model": "main.producttag",
   "fields": {
-    "name": "Politics",
-    "slug": "politics books",
+    "name": "Drama",
+    "slug": "drama",
+    "description": "",
+    "active": true
+  }
+},
+{
+  "model": "main.producttag",
+  "fields": {
+    "name": "Romance",
+    "slug": "romance",
     "description": "",
     "active": true
   }
