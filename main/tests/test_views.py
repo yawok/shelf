@@ -44,7 +44,7 @@ class TestProductListPage(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Shelf')
 
-        product_list = models.Product.active().order_by('name')
+        product_list = models.Product.objects.active().order_by('name')
         self.assertEqual(list(response.context['object_list']), list(product_list),)
         
     
@@ -63,12 +63,12 @@ class TestProductListPage(TestCase):
         )
         
         response = self.client.get(
-            reverse('products', kwargs={'tag':'python-crash-course'}
+            reverse('products', kwargs={'tag':'open-source'}
         ))
         
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Shelf')
         
-        product_list = models.Product.active().filter(tag__slug='python-crash-course').order_by('name')
+        product_list = models.Product.objects.active().filter(tags__slug='open-source').order_by('name')
         
-        self.assertEqual(list(product_list), list(response.context['python-crash-course']))
+        self.assertEqual(list(product_list), list(response.context['object_list']))
