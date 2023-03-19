@@ -34,21 +34,18 @@ class Command(BaseCommand):
                 c['tags'] += 1
                 if tag_created:
                     c['tags_created'] += 1
-            if created:
-                with open(
-                    os.path.join(
-                        options['image_basedir'],
-                        row['image_filename']
-                    ), 'rb'
-                ) as f:
-                    image, image_created = models.ProductImage.objects.get_or_create(
-                        product=product,
-                        image=ImageFile(f, name=row['image_filename']),
-                    )
-                    image.save()
-                    c['images']
-                    if image_created: 
-                        c['images_created'] += 1
+            with open(
+                os.path.join(
+                    options['image_basedir'],
+                    row['image_filename']
+                ), 'rb'
+            ) as f:
+                image = models.ProductImage(
+                    product=product,
+                    image=ImageFile(f, name=row['image_filename']),
+                )
+                image.save()
+                c['images'] += 1
             product.save()
             c['products'] += 1
             if created:
@@ -60,5 +57,5 @@ class Command(BaseCommand):
             f"Tags processed={c['tags_created']} (created={c['tags_created']})"
         )
         self.stdout.write(
-            f"Images created={c['images_created']}"
+            f"Images processed={c['images']}"
         )   
