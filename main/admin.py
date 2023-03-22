@@ -49,7 +49,7 @@ admin.site.register(models.ProductImage, ProductImageAdmin)
 class UserAdmin(DjangoUserAdmin):
     fieldsets = (
         (None, {"fields": ("email", "password")}),
-        ("Personal info", {"fields": ("firstname", "lastname")}),
+        ("Personal info", {"fields": ("first_name", "last_name")}),
         (
             "Permissions",
             {
@@ -82,9 +82,9 @@ class UserAdmin(DjangoUserAdmin):
     )
     list_display = (
         "email",
-        "firstname",
-        "lastname",
+        "first_name",
+        "last_name",
         "is_staff",
     )
-    search_fieldsets = ("email", "firstname", "lastname")
+    search_fields = ("email", "first_name", "last_name")
     ordering = ("email",)
