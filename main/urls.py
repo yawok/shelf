@@ -17,4 +17,5 @@ urlpatterns = [
     path(
         "product/<slug:slug>/", DetailView.as_view(model=models.Product), name="product"
     ),
+    path("signup/", views.SignupView.as_view(), name="signup"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
