@@ -30,7 +30,7 @@ class UserCreationForm(DjangoUserCreationForm):
 		field_classes = {'email': UsernameField}
 	
 	def send_mail(self):
-		logger.INFO(f"Sending signup email for email={self.cleaned_data['email']}")
+		logger.info(f"Sending signup email for email={self.cleaned_data['email']}")
 		message = f"Welcome {self.cleaned_data['email']}"
 		send_mail(
 			"Welcome to Shelf",

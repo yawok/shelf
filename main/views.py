@@ -35,7 +35,7 @@ class ProductListView(ListView):
         return products.order_by("name")
 
 class SignupView(FormView):
-    template_name = "main/signup.html"
+    template_name = "signup.html"
     form_class = forms.UserCreationForm
     
     def get_success_url(self):
@@ -46,9 +46,9 @@ class SignupView(FormView):
         response = super().form_valid(form)
         form.save()
         email = form.cleaned_data.get('email')
-        raw_password = self.cleaned_data.get('raw_password')
-        logger.INFO(f"New signup for {email} through SignupView.")
-        user = authenticate(email=email, raw_password=raw_password)
+        raw_password = form.cleaned_data.get('password1')
+        logger.info(f"New signup for {email} through SignupView.")
+        user = authenticate(email=email, password=raw_password)
         login(self.request, user)
         form.send_mail()
         messages.info(self.request, "You have signed up successfully.")
