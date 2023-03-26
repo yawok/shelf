@@ -80,3 +80,22 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
     objects = UserManager()
+
+
+class Address(models.Model):
+    SUPPORTED_COUNTRIES = (
+        ("gh", "Ghana"),
+        ("us", "United States"),
+        ("uk", "United Kingdom"),
+    )
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=120)
+    address1 = models.CharField("Address line 1", max_length=120)
+    address2 = models.CharField("Address line 2", max_length=120, blank=True)
+    zip_code = models.CharField("Zip/Postal Code", max_length=12)
+    city = models.CharField(max_length=120)
+    country = models.CharField(max_length=3, choices=SUPPORTED_COUNTRIES)
+    
+    def __str__(self):
+        return ", ".join([self.name, self.address1, self.address2, self.zipcode, self.city, self.country])
