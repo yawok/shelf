@@ -156,3 +156,27 @@ class TestAddressViews(TestCase):
         response = self.client.post(reverse("address_create"), post_data)
         self.assertEqual(response.status_code, 302)
         self.assertTrue(models.Address.objects.filter(user=user).exists())
+        
+        
+class TestAddToBasketView(TestCase):
+    def test_add_to_basket_logged_in_works(self):
+        user = models.User.objects.create_user("malta@guinness.com", "multaGuiness1")
+        cb = models.Product.objects.create(
+            name="The Cathedral and the bazaar",
+            slug="cathedral-bazaar",
+            price="23.00"
+        )
+        pcc = models.Product.objects.create(
+            name="Python Crash Course",
+            slug="python-crash-course",
+            price="12.00"
+        )
+        self.client.force_login(user)
+        response = self.client.get(reverse("add_to_basket"), {"product_id": cb.id})
+        response = self.client.get(reverse("add_to_basket"), {"product_id": cb.id})
+        
+        self.assertTrue(models.Basket.objects.filter(user=user).exists)
+        self.assertEqual(models.BasketLine.objects.filter(basket__user=user).count(), 1)
+
+        response = self.client.get(reverse("add_to_basket"), {"product_id": pcc.id})
+        self.assertEqual(models.BasketLine.objects.filter(basket__user=user).count(), 2)
