@@ -31,4 +31,5 @@ urlpatterns = [
     path("address/<int:pk>/", views.AddressUpdateView.as_view(), name="address_update"),
     path("address/<int:pk>/delete/", views.AddressDeleteView.as_view(), name="address_delete"),
     path("add_to_basket/", views.add_to_basket, name="add_to_basket"),
+    path("basket/", views.manage_basket, name="basket"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

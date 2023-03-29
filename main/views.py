@@ -1,8 +1,6 @@
-from django.shortcuts import render
-from django.views.generic.edit import FormView
 from main import forms, models
 from django.views.generic import ListView
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 import logging
@@ -110,4 +108,22 @@ def add_to_basket(request):
     if not created:
         basketline.quantity += 1
         basketline.save()
-    return HttpResponseRedirect(reverse("product", args=(product.slug)))
+    return HttpResponseRedirect(reverse("product", args=(product.slug,)))
+
+    
+def manage_basket(request):
+    if not request.basket:
+        return render(request, "basket.html", {"formset": None})
+    
+    if request.method == "POST":
+        formset = forms.BasketLineFormset(request.POST, instance=request.basket)
+        if formset.is_valid():
+            formset.save()
+    else:
+        formset = forms.BasketLineFormset(instance=request.basket)
+    
+    if request.basket.is_empty():
+        return render(request, "basket.html", {"formset": None})
+
+    return render(request, "basket.html", {"formset": formset})
+        
