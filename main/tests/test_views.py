@@ -180,3 +180,27 @@ class TestAddToBasketView(TestCase):
 
         response = self.client.get(reverse("add_to_basket"), {"product_id": pcc.id})
         self.assertEqual(models.BasketLine.objects.filter(basket__user=user).count(), 2)
+
+        
+class TestAddToBasketSignal(TestCase):
+    def test_add_to_basket_login_merge_works(self):
+        user = models.User.objects.create_user("random@person.com", "randomPer5on")
+        cb = models.Product.objects.create(
+            name="The Cathedral and the bazaar",
+            slug="cathedral-bazaar",
+            price="23.00"
+        )
+        pcc = models.Product.objects.create(
+            name="Python Crash Course",
+            slug="python-crash-course",
+            price="12.00"
+        )
+        basket = models.Basket.objects.create(user=user)
+        models.BasketLine.objects.create(basket=basket, product=cb, quantity=2)
+        self.client.get(reverse("add_to_basket"), {"product_id": pcc.id })
+        response = self.client.post(reverse("login"), {"email": "random@person.com", "password": "randomPer5on"})
+        
+        self.assertTrue(auth.get_user(self.client).is_authenticated)
+        self.assertTrue(models.Basket.objects.filter(user=user).exists())
+        basket = models.Basket.objects.get(user=user)
+        self.assertEqual(basket.count(), 3)

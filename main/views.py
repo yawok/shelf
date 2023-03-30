@@ -101,7 +101,7 @@ def add_to_basket(request):
         if request.user.is_authenticated:
             user = request.user
         else: 
-            basket = None
+            user = None
         basket = models.Basket.objects.create(user=user)
         request.session['basket_id'] = basket.id
     basketline, created = models.BasketLine.objects.get_or_create(product=product, basket=basket)
