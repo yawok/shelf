@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.core.validators import MinValueValidator
+import logging
+from django.core import exceptions
+
+logger = logging.getLogger(__name__)
 
 
 class ActiveManager(models.Manager):
@@ -125,6 +129,43 @@ class Basket(models.Model):
     def count(self):
         return sum(i.quantity for i in self.basketline_set.all())
 
+    def create_order(self, shipping_address, billing_address):
+        if not self.user:
+            raise exceptions.PermissionDenied("Cannot create order without user")
+        logger.info(
+            f"Creating order for basket_id: {self.id}, shipping_id: {shipping_address.id} and billing_address_id: {billing_address.id}"
+        )
+
+        order_data = {
+            "user": self.user,
+            "billing_name": billing_address.name,
+            "billing_address1": billing_address.address1,
+            "billing_address2": billing_address.address2,
+            "billing_zip_code": billing_address.zip_code,
+            "billing_city": billing_address.city,
+            "billing_country": billing_address.country,
+            "shipping_name": shipping_address.name,
+            "shipping_address1": shipping_address.address1,
+            "shipping_address2": shipping_address.address2,
+            "shipping_zip_code": shipping_address.zip_code,
+            "shipping_city": shipping_address.city,
+            "shipping_country": shipping_address.country,
+        }
+
+        order = Order.objects.create(**order_data)
+        c = 0
+        for line in self.basketline_set.all():
+            for item in range(line.quantity):
+                order_line_data = {
+                    "order": order,
+                    "product": line.product
+                }
+                order_line = Orderline.objects.create(**order_line_data)
+                c += 1
+        logger.info(f"Created order with id={order.id} and lines_count={c}")
+        self.status = Basket.SUBMITTED
+        self.save()
+        return order
 
 class BasketLine(models.Model):
     basket = models.ForeignKey(Basket, on_delete=models.CASCADE)
