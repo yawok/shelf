@@ -127,3 +127,19 @@ def manage_basket(request):
 
     return render(request, "basket.html", {"formset": formset})
         
+
+class AddressSelectionView(LoginRequiredMixin, FormView):
+    template_name = "select_address.html"
+    form_class = forms.AddressSelectionForm
+    success_url = reverse_lazy("checkout_done")
+    
+    def get_from_kwargs(self):
+        kwargs = super().get_from_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+    
+    def form_valid(self, form):
+        del self.request.session["basket_id"]
+        basket = self.request.basket
+        basket.create_order(form.cleaned_data["shipping_address"], form.cleaned_data["billing_address"])
+        return super().form_valid(form)
