@@ -129,12 +129,12 @@ def manage_basket(request):
         
 
 class AddressSelectionView(LoginRequiredMixin, FormView):
-    template_name = "select_address.html"
+    template_name = "address_select.html"
     form_class = forms.AddressSelectionForm
     success_url = reverse_lazy("checkout_done")
     
-    def get_from_kwargs(self):
-        kwargs = super().get_from_kwargs()
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
         kwargs["user"] = self.request.user
         return kwargs
     

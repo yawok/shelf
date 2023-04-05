@@ -82,7 +82,7 @@ BasketLineFormset = inlineformset_factory(
 )
 
 
-class AddressSelectionForm(forms.ModelForm):
+class AddressSelectionForm(forms.Form):
     billing_address = forms.ModelChoiceField(queryset=None)
     shipping_address = forms.ModelChoiceField(queryset=None)
     
@@ -90,4 +90,4 @@ class AddressSelectionForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         queryset = models.Address.objects.filter(user=user)
         self.fields['shipping_address'].queryset = queryset
-        self.fields['bill_address'].queryset = queryset
+        self.fields['billing_address'].queryset = queryset

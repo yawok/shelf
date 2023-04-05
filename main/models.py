@@ -108,7 +108,7 @@ class Address(models.Model):
                 self.name,
                 self.address1,
                 self.address2,
-                self.zipcode,
+                self.zip_code,
                 self.city,
                 self.country,
             ]
