@@ -156,16 +156,14 @@ class Basket(models.Model):
         c = 0
         for line in self.basketline_set.all():
             for item in range(line.quantity):
-                order_line_data = {
-                    "order": order,
-                    "product": line.product
-                }
+                order_line_data = {"order": order, "product": line.product}
                 order_line = Orderline.objects.create(**order_line_data)
                 c += 1
         logger.info(f"Created order with id={order.id} and lines_count={c}")
         self.status = Basket.SUBMITTED
         self.save()
         return order
+
 
 class BasketLine(models.Model):
     basket = models.ForeignKey(Basket, on_delete=models.CASCADE)
