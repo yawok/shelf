@@ -1,5 +1,6 @@
 from main import models
 
+
 def basket_middleware(get_request):
     def middleware(request):
         if "basket_id" in request.session:
@@ -10,4 +11,5 @@ def basket_middleware(get_request):
             request.basket = None
         response = get_request(request)
         return response
+
     return middleware
