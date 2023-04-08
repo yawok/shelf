@@ -10,31 +10,32 @@ from django.contrib.auth.signals import user_logged_in
 THUMBNAIL_SIZE = (300, 300)
 logger = logging.getLogger(__name__)
 
+
 @receiver(pre_save, sender=models.ProductImage)
 def generate_thumbnail(sender, instance, **kwargs):
     logger.info(f"Generating thumbnail for product {instance.product.id}")
     image = Image.open(instance.image)
     image = image.convert("RGB")
     image.thumbnail(THUMBNAIL_SIZE, Image.ANTIALIAS)
-    
+
     temp_thumb = BytesIO()
     image.save(temp_thumb, "JPEG")
     temp_thumb.seek(0)
-    
+
     instance.thumbnail.save(
-        instance.image.name,
-        ContentFile(temp_thumb.read()),
-        save=False
+        instance.image.name, ContentFile(temp_thumb.read()), save=False
     )
     temp_thumb.close()
-    
+
 
 @receiver(user_logged_in)
 def merge_basket_if_found(sender, user, request, **kwargs):
     anonymous_basket = getattr(request, "basket", None)
     if anonymous_basket:
         try:
-            logged_in_basket = models.Basket.objects.get(user=user, status=models.Basket.OPEN)
+            logged_in_basket = models.Basket.objects.get(
+                user=user, status=models.Basket.OPEN
+            )
             for line in anonymous_basket.basketline_set.all():
                 line.basket = logged_in_basket
                 line.save()
