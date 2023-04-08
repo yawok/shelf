@@ -11,6 +11,7 @@ from django.http import HttpResponseRedirect
 
 logger = logging.getLogger(__name__)
 
+
 class ContactUsForm(FormView):
     template_name = "contact_form.html"
     form_class = forms.ContactForm
@@ -36,110 +37,130 @@ class ProductListView(ListView):
             products = models.Product.objects.active()
         return products.order_by("name")
 
+
 class SignupView(FormView):
     template_name = "signup.html"
     form_class = forms.UserCreationForm
-    
+
     def get_success_url(self):
-        redirect_to = self.request.GET.get('next', '/')
+        redirect_to = self.request.GET.get("next", "/")
         return redirect_to
-    
+
     def form_valid(self, form):
         response = super().form_valid(form)
         form.save()
-        email = form.cleaned_data.get('email')
-        raw_password = form.cleaned_data.get('password1')
+        email = form.cleaned_data.get("email")
+        raw_password = form.cleaned_data.get("password1")
         logger.info(f"New signup for {email} through SignupView.")
         user = authenticate(email=email, password=raw_password)
         login(self.request, user)
         form.send_mail()
         messages.info(self.request, "You have signed up successfully.")
-        
+
         return response
-    
+
 
 class AddressListView(LoginRequiredMixin, ListView):
     model = models.Address
-    
+
     def get_queryset(self):
         return models.Address.objects.all().filter(user=self.request.user)
 
 
 class AddressCreateView(LoginRequiredMixin, CreateView):
     model = models.Address
-    fields = ["name", "address1", "address2", "zip_code", "city", "country", ]
-    success_url = reverse_lazy('address_list')
+    fields = [
+        "name",
+        "address1",
+        "address2",
+        "zip_code",
+        "city",
+        "country",
+    ]
+    success_url = reverse_lazy("address_list")
 
     def form_valid(self, form):
         obj = form.save(commit=False)
         obj.user = self.request.user
         obj.save()
         return super().form_valid(form)
-    
-    
+
+
 class AddressUpdateView(LoginRequiredMixin, UpdateView):
     model = models.Address
-    fields = ["name", "address1", "address2", "zip_code", "city", "country",]
-    
+    fields = [
+        "name",
+        "address1",
+        "address2",
+        "zip_code",
+        "city",
+        "country",
+    ]
+
     success_url = reverse_lazy("address_list")
-    
+
     def get_queryset(self):
         return models.Address.objects.filter(user=self.request.user)
 
-        
+
 class AddressDeleteView(LoginRequiredMixin, DeleteView):
     model = models.Address
     success_url = reverse_lazy("address_list")
-    
+
     def get_queryset(self):
         return models.Address.objects.filter(user=self.request.user)
-    
+
+
 def add_to_basket(request):
-    product = get_object_or_404(models.Product, pk=request.GET.get('product_id'))
+    product = get_object_or_404(models.Product, pk=request.GET.get("product_id"))
     basket = request.basket
     if not request.basket:
         if request.user.is_authenticated:
             user = request.user
-        else: 
+        else:
             user = None
         basket = models.Basket.objects.create(user=user)
-        request.session['basket_id'] = basket.id
-    basketline, created = models.BasketLine.objects.get_or_create(product=product, basket=basket)
+        request.session["basket_id"] = basket.id
+    basketline, created = models.BasketLine.objects.get_or_create(
+        product=product, basket=basket
+    )
     if not created:
         basketline.quantity += 1
         basketline.save()
     return HttpResponseRedirect(reverse("product", args=(product.slug,)))
 
-    
+
 def manage_basket(request):
     if not request.basket:
         return render(request, "basket.html", {"formset": None})
-    
+
     if request.method == "POST":
         formset = forms.BasketLineFormset(request.POST, instance=request.basket)
         if formset.is_valid():
             formset.save()
     else:
         formset = forms.BasketLineFormset(instance=request.basket)
-    
+
     if request.basket.is_empty():
         return render(request, "basket.html", {"formset": None})
 
     return render(request, "basket.html", {"formset": formset})
-        
+
 
 class AddressSelectionView(LoginRequiredMixin, FormView):
     template_name = "address_select.html"
     form_class = forms.AddressSelectionForm
     success_url = reverse_lazy("checkout_done")
-    
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs["user"] = self.request.user
         return kwargs
-    
+
     def form_valid(self, form):
         del self.request.session["basket_id"]
         basket = self.request.basket
-        basket.create_order(form.cleaned_data["shipping_address"], form.cleaned_data["billing_address"])
+        basket.create_order(
+            form.cleaned_data["shipping_address"], form.cleaned_data["billing_address"]
+        )
         return super().form_valid(form)
