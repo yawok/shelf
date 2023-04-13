@@ -7,7 +7,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     email = "user@example.com"
 
     class Meta:
-        models = models.User
+        model = models.User
         django_get_or_create = ("email",)
 
 
@@ -15,9 +15,9 @@ class ProductFactory(factory.django.DjangoModelFactory):
     price = factory.fuzzy.FuzzyDecimal(1.0, 1000.0, 2)
 
     class Meta:
-        models = models.Product
+        model = models.Product
 
 
 class AddressFactory(factory.django.DjangoModelFactory):
     class Meta:
-        models = models.Address
+        model = models.Address
