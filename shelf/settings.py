@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "debug_toolbar",
     "django_extensions",
+    "django_tables2",
 ]
 
 MIDDLEWARE = [
@@ -149,3 +150,5 @@ AUTH_USER_MODEL = "main.User"
 LOGIN_REDIRECT_URL = "/"
 
 INTERNAL_IPS = ["127.0.0.1"]
+
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap.html"

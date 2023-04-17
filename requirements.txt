@@ -11,6 +11,8 @@ dill==0.3.6
 Django==4.1.7
 django-debug-toolbar==4.0.0
 django-extensions==3.2.1
+django-filter==23.1
+django-tables2==2.5.3
 djlint==1.19.16
 EditorConfig==0.12.3
 executing==1.2.0

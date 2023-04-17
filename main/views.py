@@ -5,9 +5,13 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 import logging
 from django.urls import reverse_lazy, reverse
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic.edit import FormView, CreateView, UpdateView, DeleteView
 from django.http import HttpResponseRedirect
+from django import forms as django_forms
+from django.db import models as django_models
+import django_filters
+from django_filters.views import FilterView
 
 logger = logging.getLogger(__name__)
 
@@ -164,3 +168,19 @@ class AddressSelectionView(LoginRequiredMixin, FormView):
             form.cleaned_data["shipping_address"], form.cleaned_data["billing_address"]
         )
         return super().form_valid(form)
+
+
+class DateInput(django_forms.DateInput):
+    input_type = 'date'
+
+
+class OrderFilter(django_filters.FilterSet):
+    class Meta:
+        models = models.Order
+        
+        fields = {
+            'user__email': ['icontains'],
+            'status': ['exact'],
+            'date_updated': ['lt', 'gt'],
+            'date_added': ['lt', 'gt'],
+        }

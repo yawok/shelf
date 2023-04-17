@@ -46,4 +46,5 @@ urlpatterns = [
         TemplateView.as_view(template_name="order_done.html"),
         name="checkout_done",
     ),
+    path("order_dashboard/", views.OrderView.as_view, name="order_dashboard"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
