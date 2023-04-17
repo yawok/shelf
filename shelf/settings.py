@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "debug_toolbar",
     "django_extensions",
 ]
 
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "main.middlewares.basket_middleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "shelf.urls"
@@ -145,3 +147,5 @@ else:
 
 AUTH_USER_MODEL = "main.User"
 LOGIN_REDIRECT_URL = "/"
+
+INTERNAL_IPS = ["127.0.0.1"]

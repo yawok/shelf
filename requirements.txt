@@ -9,6 +9,7 @@ cssbeautifier==1.14.7
 decorator==5.1.1
 dill==0.3.6
 Django==4.1.7
+django-debug-toolbar==4.0.0
 django-extensions==3.2.1
 djlint==1.19.16
 EditorConfig==0.12.3
