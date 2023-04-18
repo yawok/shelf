@@ -5,6 +5,7 @@
 	<h2>Order Dashboard</h2>
 	<form method="get">
 		{{ filter.form.as_p }}
+		<input type="submit"/>
 	</form>
 	<p>
 		{% render_table filter.qs %}

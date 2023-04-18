@@ -176,7 +176,7 @@ class DateInput(django_forms.DateInput):
 
 class OrderFilter(django_filters.FilterSet):
     class Meta:
-        models = models.Order
+        model = models.Order
         
         fields = {
             'user__email': ['icontains'],
@@ -184,3 +184,19 @@ class OrderFilter(django_filters.FilterSet):
             'date_updated': ['lt', 'gt'],
             'date_added': ['lt', 'gt'],
         }
+        filter_overrides = {
+            django_models.DateTimeField: {
+                'filter_class': django_filters.DateFilter,
+                'extra': lambda f:{
+                    'widget': DateInput
+                }
+            }
+        }
+
+
+class OrderView(UserPassesTestMixin, FilterView):
+    filterset_class = OrderFilter
+    login_url = reverse_lazy('login')
+    
+    def test_func(self):
+        return self.request.user.is_staff is True
