@@ -139,11 +139,11 @@ def manage_basket(request):
         return render(request, "basket.html", {"formset": None})
 
     if request.method == "POST":
-        formset = forms.BasketLineFormset(request.POST, instance=request.basket)
+        formset = forms.BasketLineFormSet(request.POST, instance=request.basket)
         if formset.is_valid():
             formset.save()
     else:
-        formset = forms.BasketLineFormset(instance=request.basket)
+        formset = forms.BasketLineFormSet(instance=request.basket)
 
     if request.basket.is_empty():
         return render(request, "basket.html", {"formset": None})
