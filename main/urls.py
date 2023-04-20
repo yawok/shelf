@@ -1,10 +1,16 @@
-from django.urls import path
+from django.urls import path, include
 from django.views.generic import TemplateView, DetailView
 from . import views
 from django.conf.urls.static import static
 from django.conf import settings
-from main import models, forms
+from main import models, forms, endpoints
 from django.contrib.auth import views as auth_views
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r"orderlines", endpoints.PaidOrderLineViewSet)
+router.register(r"orders", endpoints.PaidOrderViewSet)
+
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
@@ -47,4 +53,5 @@ urlpatterns = [
         name="checkout_done",
     ),
     path("order_dashboard/", views.OrderView.as_view(), name="order_dashboard"),
+    path("api/", include(router.urls))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
