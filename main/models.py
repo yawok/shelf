@@ -157,7 +157,7 @@ class Basket(models.Model):
         for line in self.basketline_set.all():
             for item in range(line.quantity):
                 order_line_data = {"order": order, "product": line.product}
-                order_line = Orderline.objects.create(**order_line_data)
+                order_line = OrderLine.objects.create(**order_line_data)
                 c += 1
         logger.info(f"Created order with id={order.id} and lines_count={c}")
         self.status = Basket.SUBMITTED
@@ -198,7 +198,7 @@ class Order(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
 
 
-class Orderline(models.Model):
+class OrderLine(models.Model):
     NEW = 10
     PROCESSING = 20
     SENT = 30

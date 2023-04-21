@@ -109,7 +109,7 @@ class BasketAdmin(admin.ModelAdmin):
 
 
 class OrderLineInline(admin.TabularInline):
-    model = models.Orderline
+    model = models.OrderLine
     raw_id_fields = ("product",)
 
 

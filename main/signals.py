@@ -48,11 +48,11 @@ def merge_basket_if_found(sender, user, request, **kwargs):
             logger.info(f"Assigned user to basket with id: {anonymous_basket.id}")
 
 
-@receiver(post_save, sender=models.BasketLine)
-def orderline_to_order_status(sender, instance, **kwargs):
+@receiver(post_save, sender=models.OrderLine)
+def orderLine_to_order_status(sender, instance, **kwargs):
     if not instance.order.lines.filter(status__lt=models.OrderLine.SENT).exists():
         logger.info(f"All orders for {instance.order.id} have been processed. Marked as done.")
-        instance.order.STATUS = models.Order.DONE
+        instance.order.status = models.Order.DONE
         instance.order.save()
         
         

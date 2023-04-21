@@ -5,7 +5,7 @@ class OrderLineSerializer(serializers.HyperlinkedModelSerializer):
     product = serializers.StringRelatedField()
     
     class Meta:
-        models = models.OrderLine
+        model = models.OrderLine
         fields = ("id", "order", "product", "status" )
         read_only_fields = ("id", "order", "product",)
         
@@ -20,10 +20,10 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
    class Meta:
        model = models.Order
        fields = ("shipping_name", 
-                 "shippping_address1",
-                 "shippping_address2",
-                 "shippping_zipcode",
-                 "shippping_city",
+                 "shipping_address1",
+                 "shipping_address2",
+                 "shipping_zip_code",
+                 "shipping_city",
                  "shipping_country",
                  "date_updated",       
                  "date_added",
